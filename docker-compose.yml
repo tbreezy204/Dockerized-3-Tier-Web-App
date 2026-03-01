@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "80:80"              # ONLY public port
+    depends_on:
+      - backend
+    restart: always
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    expose:
+      - "3000"               # internal only (NOT public)
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - redis
+      - mysql
+    restart: always
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_DATABASE: schooldb
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin123
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    expose:
+      - "3306"               # internal only
+    restart: always
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    volumes:
+      - ./redis_data:/data
+    expose:
+      - "6379"               # internal only
+    restart: always

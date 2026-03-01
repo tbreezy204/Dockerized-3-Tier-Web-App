@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: tochukwu123/school-frontend:v1
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+  backend:
+    image: tochukwu123/school-backend:v1
+    expose:
+      - "3000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - mysql
+      - redis
+
+  mysql:
+    image: mysql:8.0
+    expose:
+      - "3306"
+
+  redis:
+    image: redis:alpine
+    expose:
+      - "6379"

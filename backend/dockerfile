@@ -1,0 +1,8 @@
+FROM node:20-alpine
+WORKDIR /app
+COPY ./code/package*.json ./
+RUN npm install
+COPY ./code .
+# No EXPOSEcd ..
+ port 3000 is only accessible internally via Docker network
+CMD ["npm", "start"]
