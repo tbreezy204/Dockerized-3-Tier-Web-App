@@ -4,5 +4,5 @@ COPY ./code/package*.json ./
 RUN npm install
 COPY ./code .
 EXPOSE 3000
- port 3000 is only accessible internally via Docker network
+# port 3000 is only accessible internally via Docker network
 CMD ["npm", "start"]
