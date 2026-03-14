@@ -47,4 +47,3 @@ steps:
         cd Three-Tier-App
         docker compose down
         docker compose up -d
-```
